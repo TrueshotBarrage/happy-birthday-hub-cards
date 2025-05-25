@@ -3,9 +3,11 @@ import React from 'react';
 import BirthdayCard from './BirthdayCard';
 
 interface Card {
+  id?: string;
   name: string;
   content: string;
   email: string;
+  created_at?: string;
 }
 
 interface CardDisplayProps {
@@ -35,7 +37,7 @@ const CardDisplay = ({ cards }: CardDisplayProps) => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {cards.map((card, index) => (
           <BirthdayCard
-            key={index}
+            key={card.id || index}
             name={card.name}
             content={card.content}
             email={card.email}

@@ -1,34 +1,58 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
 import AuthForm from '@/components/AuthForm';
 import CardForm from '@/components/CardForm';
 import CardDisplay from '@/components/CardDisplay';
 import { User } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 interface Card {
+  id?: string;
   name: string;
   content: string;
   email: string;
+  created_at?: string;
 }
 
 const Index = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userEmail, setUserEmail] = useState('');
   const [cards, setCards] = useState<Card[]>([]);
+  const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
 
-  // Load cards from localStorage on component mount
-  useEffect(() => {
-    const savedCards = localStorage.getItem('birthdayCards');
-    if (savedCards) {
-      setCards(JSON.parse(savedCards));
+  // Fetch cards from Supabase
+  const fetchCards = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('birthday_cards')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching cards:', error);
+        toast({
+          title: "Error",
+          description: "Failed to load birthday cards",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      setCards(data || []);
+    } catch (error) {
+      console.error('Error fetching cards:', error);
+    } finally {
+      setLoading(false);
     }
-  }, []);
+  };
 
-  // Save cards to localStorage whenever cards change
+  // Load cards from Supabase on component mount
   useEffect(() => {
-    localStorage.setItem('birthdayCards', JSON.stringify(cards));
-  }, [cards]);
+    fetchCards();
+  }, []);
 
   const handleLogin = (email: string) => {
     setUserEmail(email);
@@ -40,9 +64,45 @@ const Index = () => {
     setUserEmail('');
   };
 
-  const handleSubmitCard = (newCard: Card) => {
-    setCards(prevCards => [...prevCards, newCard]);
-    console.log('New card added:', newCard);
+  const handleSubmitCard = async (newCard: Card) => {
+    try {
+      const { data, error } = await supabase
+        .from('birthday_cards')
+        .insert([{
+          name: newCard.name,
+          content: newCard.content,
+          email: newCard.email
+        }])
+        .select()
+        .single();
+
+      if (error) {
+        console.error('Error inserting card:', error);
+        toast({
+          title: "Error",
+          description: "Failed to save birthday card",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Add the new card to the beginning of the list
+      setCards(prevCards => [data, ...prevCards]);
+      
+      toast({
+        title: "Success! 🎉",
+        description: "Your birthday card has been sent!",
+      });
+
+      console.log('New card added:', data);
+    } catch (error) {
+      console.error('Error submitting card:', error);
+      toast({
+        title: "Error",
+        description: "Failed to save birthday card",
+        variant: "destructive",
+      });
+    }
   };
 
   if (!isAuthenticated) {
@@ -85,7 +145,16 @@ const Index = () => {
           {/* Card Display - Takes 2 columns */}
           <div className="lg:col-span-2">
             <div className="bg-white/70 backdrop-blur-sm rounded-xl p-6 shadow-lg">
-              <CardDisplay cards={cards} />
+              {loading ? (
+                <div className="text-center py-12">
+                  <div className="text-6xl mb-4">🎂</div>
+                  <h3 className="text-xl font-semibold text-gray-600">
+                    Loading birthday cards...
+                  </h3>
+                </div>
+              ) : (
+                <CardDisplay cards={cards} />
+              )}
             </div>
           </div>
         </div>
