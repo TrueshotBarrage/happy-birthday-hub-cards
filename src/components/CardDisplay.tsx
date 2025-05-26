@@ -1,6 +1,5 @@
-
-import React from 'react';
-import FarewellCard from './FarewellCard';
+import React from "react";
+import FarewellCard from "./FarewellCard";
 
 interface Card {
   id?: string;
@@ -19,7 +18,12 @@ interface CardDisplayProps {
   onDeleteCard: (cardId: string) => void;
 }
 
-const CardDisplay = ({ cards, currentUserEmail, onUpdateCard, onDeleteCard }: CardDisplayProps) => {
+const CardDisplay = ({
+  cards,
+  currentUserEmail,
+  onUpdateCard,
+  onDeleteCard,
+}: CardDisplayProps) => {
   if (cards.length === 0) {
     return (
       <div className="text-center py-12">
@@ -28,7 +32,8 @@ const CardDisplay = ({ cards, currentUserEmail, onUpdateCard, onDeleteCard }: Ca
           No farewell messages yet!
         </h3>
         <p className="text-gray-500">
-          Be the first to share a heartfelt farewell message.
+          Be the first to share a heartfelt farewell message for our favorite
+          resident doctor Josh Kim.
         </p>
       </div>
     );

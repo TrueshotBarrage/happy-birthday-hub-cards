@@ -1,10 +1,9 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
-import AuthForm from '@/components/AuthForm';
-import CardForm from '@/components/CardForm';
-import CardDisplay from '@/components/CardDisplay';
+import AuthForm from "@/components/AuthForm";
+import CardForm from "@/components/CardForm";
+import CardDisplay from "@/components/CardDisplay";
 import { User } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -20,7 +19,7 @@ interface Card {
 
 const Index = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userName, setUserName] = useState('');
+  const [userName, setUserName] = useState("");
   const [userEmail, setUserEmail] = useState<string | undefined>();
   const [cards, setCards] = useState<Card[]>([]);
   const [loading, setLoading] = useState(true);
@@ -30,12 +29,12 @@ const Index = () => {
   const fetchCards = async () => {
     try {
       const { data, error } = await supabase
-        .from('birthday_cards')
-        .select('*')
-        .order('created_at', { ascending: false });
+        .from("birthday_cards")
+        .select("*")
+        .order("created_at", { ascending: false });
 
       if (error) {
-        console.error('Error fetching cards:', error);
+        console.error("Error fetching cards:", error);
         toast({
           title: "Error",
           description: "Failed to load farewell messages",
@@ -46,7 +45,7 @@ const Index = () => {
 
       setCards(data || []);
     } catch (error) {
-      console.error('Error fetching cards:', error);
+      console.error("Error fetching cards:", error);
     } finally {
       setLoading(false);
     }
@@ -65,26 +64,28 @@ const Index = () => {
 
   const handleLogout = () => {
     setIsAuthenticated(false);
-    setUserName('');
+    setUserName("");
     setUserEmail(undefined);
   };
 
   const handleSubmitCard = async (newCard: Card) => {
     try {
       const { data, error } = await supabase
-        .from('birthday_cards')
-        .insert([{
-          name: newCard.name,
-          content: newCard.content,
-          email: newCard.email,
-          image_url: newCard.image_url,
-          allows_editing: !!userEmail
-        }])
+        .from("birthday_cards")
+        .insert([
+          {
+            name: newCard.name,
+            content: newCard.content,
+            email: newCard.email,
+            image_url: newCard.image_url,
+            allows_editing: !!userEmail,
+          },
+        ])
         .select()
         .single();
 
       if (error) {
-        console.error('Error inserting card:', error);
+        console.error("Error inserting card:", error);
         toast({
           title: "Error",
           description: "Failed to save farewell message",
@@ -94,16 +95,16 @@ const Index = () => {
       }
 
       // Add the new card to the beginning of the list
-      setCards(prevCards => [data, ...prevCards]);
-      
+      setCards((prevCards) => [data, ...prevCards]);
+
       toast({
         title: "Success! 🎉",
         description: "Your farewell message has been sent!",
       });
 
-      console.log('New card added:', data);
+      console.log("New card added:", data);
     } catch (error) {
-      console.error('Error submitting card:', error);
+      console.error("Error submitting card:", error);
       toast({
         title: "Error",
         description: "Failed to save farewell message",
@@ -115,12 +116,12 @@ const Index = () => {
   const handleUpdateCard = async (cardId: string, updatedContent: string) => {
     try {
       const { error } = await supabase
-        .from('birthday_cards')
+        .from("birthday_cards")
         .update({ content: updatedContent })
-        .eq('id', cardId);
+        .eq("id", cardId);
 
       if (error) {
-        console.error('Error updating card:', error);
+        console.error("Error updating card:", error);
         toast({
           title: "Error",
           description: "Failed to update message",
@@ -130,8 +131,8 @@ const Index = () => {
       }
 
       // Update the card in the local state
-      setCards(prevCards => 
-        prevCards.map(card => 
+      setCards((prevCards) =>
+        prevCards.map((card) =>
           card.id === cardId ? { ...card, content: updatedContent } : card
         )
       );
@@ -141,19 +142,21 @@ const Index = () => {
         description: "Your message has been updated",
       });
     } catch (error) {
-      console.error('Error updating card:', error);
+      console.error("Error updating card:", error);
     }
   };
 
   const handleDeleteCard = async (cardId: string) => {
     try {
-      const { error } = await supabase
-        .from('birthday_cards')
+      const { status, error } = await supabase
+        .from("birthday_cards")
         .delete()
-        .eq('id', cardId);
+        .eq("id", cardId);
+
+      console.log(status);
 
       if (error) {
-        console.error('Error deleting card:', error);
+        console.error("Error deleting card:", error);
         toast({
           title: "Error",
           description: "Failed to delete message",
@@ -163,14 +166,14 @@ const Index = () => {
       }
 
       // Remove the card from local state
-      setCards(prevCards => prevCards.filter(card => card.id !== cardId));
+      setCards((prevCards) => prevCards.filter((card) => card.id !== cardId));
 
       toast({
         title: "Deleted! 🗑️",
         description: "Your message has been deleted",
       });
     } catch (error) {
-      console.error('Error deleting card:', error);
+      console.error("Error deleting card:", error);
     }
   };
 
@@ -190,9 +193,11 @@ const Index = () => {
             <div className="flex items-center space-x-2 text-gray-600">
               <User className="w-4 h-4" />
               <span className="text-sm">{userName}</span>
-              {userEmail && <span className="text-xs text-gray-500">({userEmail})</span>}
+              {userEmail && (
+                <span className="text-xs text-gray-500">({userEmail})</span>
+              )}
             </div>
-            <Button 
+            <Button
               onClick={handleLogout}
               variant="outline"
               size="sm"
@@ -209,16 +214,22 @@ const Index = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Card Form - Takes 1 column */}
           <div className="lg:col-span-1">
-            <CardForm onSubmitCard={handleSubmitCard} userName={userName} userEmail={userEmail} />
+            <CardForm
+              onSubmitCard={handleSubmitCard}
+              userName={userName}
+              userEmail={userEmail}
+            />
           </div>
-          
+
           {/* Card Display - Takes 2 columns */}
           <div className="lg:col-span-2">
             <div className="bg-white/70 backdrop-blur-sm rounded-xl p-6 shadow-lg">
               {!userEmail && (
                 <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-lg">
                   <p className="text-sm text-amber-700">
-                    💡 <strong>Tip:</strong> To edit or delete your messages later, please log out and log back in with your email address.
+                    💡 <strong>Tip:</strong> To edit or delete your messages
+                    later, please log out and log back in with your email
+                    address.
                   </p>
                 </div>
               )}
@@ -230,8 +241,8 @@ const Index = () => {
                   </h3>
                 </div>
               ) : (
-                <CardDisplay 
-                  cards={cards} 
+                <CardDisplay
+                  cards={cards}
                   currentUserEmail={userEmail}
                   onUpdateCard={handleUpdateCard}
                   onDeleteCard={handleDeleteCard}
@@ -244,7 +255,7 @@ const Index = () => {
 
       {/* Footer */}
       <footer className="text-center py-6 text-gray-500 text-sm">
-        <p>Made with 💖 for celebrating meaningful goodbyes</p>
+        <p>Made with 💖 by Dave Kim</p>
       </footer>
     </div>
   );

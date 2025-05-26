@@ -1,8 +1,13 @@
-
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Heart } from "lucide-react";
 
 interface AuthFormProps {
@@ -10,8 +15,8 @@ interface AuthFormProps {
 }
 
 const AuthForm = ({ onLogin }: AuthFormProps) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,10 +33,11 @@ const AuthForm = ({ onLogin }: AuthFormProps) => {
             <Heart className="w-8 h-8 text-white" />
           </div>
           <CardTitle className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
-            💝 Farewell Messages 🌟
+            💝 Farewell Messages for Josh Kim 🌟
           </CardTitle>
           <CardDescription className="text-gray-600">
-            Join us in sending heartfelt farewell messages. Share your thoughts and memories!
+            Join us in sending heartfelt farewell messages for our favorite
+            resident doctor!
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -61,11 +67,12 @@ const AuthForm = ({ onLogin }: AuthFormProps) => {
                 className="w-full border-2 border-orange-200 focus:border-orange-400 rounded-lg"
               />
               <p className="text-xs text-gray-500 mt-1">
-                Providing your email allows you to edit or delete your message later
+                Providing your email allows you to edit or delete your message
+                later
               </p>
             </div>
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-semibold py-2 rounded-lg transition-all duration-200 transform hover:scale-105"
             >
               Start Writing Messages 💌
