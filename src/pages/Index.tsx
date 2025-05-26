@@ -25,17 +25,6 @@ const Index = () => {
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
 
-  // Set current user email for RLS policies
-  const setCurrentUserEmail = async (email?: string) => {
-    if (email) {
-      await supabase.rpc('set_config', {
-        setting_name: 'app.current_user_email',
-        setting_value: email,
-        is_local: true
-      });
-    }
-  };
-
   // Fetch cards from Supabase
   const fetchCards = async () => {
     try {
@@ -71,10 +60,6 @@ const Index = () => {
     setUserName(name);
     setUserEmail(email);
     setIsAuthenticated(true);
-    
-    if (email) {
-      await setCurrentUserEmail(email);
-    }
   };
 
   const handleLogout = () => {
