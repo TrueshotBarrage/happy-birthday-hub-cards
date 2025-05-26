@@ -13,6 +13,7 @@ interface Card {
   name: string;
   content: string;
   email: string;
+  image_url?: string;
   created_at?: string;
   allows_editing?: boolean;
 }
