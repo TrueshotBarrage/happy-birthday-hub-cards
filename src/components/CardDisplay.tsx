@@ -7,6 +7,7 @@ interface Card {
   name: string;
   content: string;
   email: string;
+  image_url?: string;
   created_at?: string;
   allows_editing?: boolean;
 }
@@ -46,6 +47,7 @@ const CardDisplay = ({ cards, currentUserEmail, onUpdateCard, onDeleteCard }: Ca
             name={card.name}
             content={card.content}
             email={card.email}
+            image_url={card.image_url}
             index={index}
             allowsEditing={card.allows_editing}
             canEdit={currentUserEmail === card.email && card.allows_editing}

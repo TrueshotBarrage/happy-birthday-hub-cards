@@ -76,6 +76,7 @@ const Index = () => {
           name: newCard.name,
           content: newCard.content,
           email: newCard.email,
+          image_url: newCard.image_url,
           allows_editing: !!userEmail
         }])
         .select()

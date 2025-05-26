@@ -10,6 +10,7 @@ interface FarewellCardProps {
   name: string;
   content: string;
   email: string;
+  image_url?: string;
   index: number;
   allowsEditing?: boolean;
   canEdit: boolean;
@@ -22,6 +23,7 @@ const FarewellCard = ({
   name, 
   content, 
   email, 
+  image_url,
   index, 
   allowsEditing, 
   canEdit, 
@@ -63,7 +65,7 @@ const FarewellCard = ({
   return (
     <Card className={`shadow-lg border-0 bg-gradient-to-br ${cardColor} text-white transform transition-all duration-300 hover:scale-105 hover:shadow-xl relative`}>
       {canEdit && (
-        <div className="absolute top-2 right-2 flex space-x-1">
+        <div className="absolute top-2 right-2 flex space-x-1 z-10">
           {isEditing ? (
             <>
               <Button
@@ -112,6 +114,16 @@ const FarewellCard = ({
             <h3 className="text-lg font-bold mb-1">💝 Farewell Message 🌟</h3>
             <div className="w-12 h-0.5 bg-white/50 mx-auto"></div>
           </div>
+          
+          {image_url && (
+            <div className="mb-4">
+              <img
+                src={image_url}
+                alt="Farewell message"
+                className="w-full h-40 object-cover rounded-lg shadow-md"
+              />
+            </div>
+          )}
           
           <div className="bg-white/20 backdrop-blur-sm rounded-lg p-4">
             {isEditing ? (
