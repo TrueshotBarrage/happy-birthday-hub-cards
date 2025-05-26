@@ -14,14 +14,27 @@ interface Card {
   content: string;
   email: string;
   created_at?: string;
+  allows_editing?: boolean;
 }
 
 const Index = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userEmail, setUserEmail] = useState('');
+  const [userName, setUserName] = useState('');
+  const [userEmail, setUserEmail] = useState<string | undefined>();
   const [cards, setCards] = useState<Card[]>([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+
+  // Set current user email for RLS policies
+  const setCurrentUserEmail = async (email?: string) => {
+    if (email) {
+      await supabase.rpc('set_config', {
+        setting_name: 'app.current_user_email',
+        setting_value: email,
+        is_local: true
+      });
+    }
+  };
 
   // Fetch cards from Supabase
   const fetchCards = async () => {
@@ -35,7 +48,7 @@ const Index = () => {
         console.error('Error fetching cards:', error);
         toast({
           title: "Error",
-          description: "Failed to load birthday cards",
+          description: "Failed to load farewell messages",
           variant: "destructive",
         });
         return;
@@ -54,14 +67,20 @@ const Index = () => {
     fetchCards();
   }, []);
 
-  const handleLogin = (email: string) => {
+  const handleLogin = async (name: string, email?: string) => {
+    setUserName(name);
     setUserEmail(email);
     setIsAuthenticated(true);
+    
+    if (email) {
+      await setCurrentUserEmail(email);
+    }
   };
 
   const handleLogout = () => {
     setIsAuthenticated(false);
-    setUserEmail('');
+    setUserName('');
+    setUserEmail(undefined);
   };
 
   const handleSubmitCard = async (newCard: Card) => {
@@ -71,7 +90,8 @@ const Index = () => {
         .insert([{
           name: newCard.name,
           content: newCard.content,
-          email: newCard.email
+          email: newCard.email,
+          allows_editing: !!userEmail
         }])
         .select()
         .single();
@@ -80,7 +100,7 @@ const Index = () => {
         console.error('Error inserting card:', error);
         toast({
           title: "Error",
-          description: "Failed to save birthday card",
+          description: "Failed to save farewell message",
           variant: "destructive",
         });
         return;
@@ -91,7 +111,7 @@ const Index = () => {
       
       toast({
         title: "Success! 🎉",
-        description: "Your birthday card has been sent!",
+        description: "Your farewell message has been sent!",
       });
 
       console.log('New card added:', data);
@@ -99,9 +119,71 @@ const Index = () => {
       console.error('Error submitting card:', error);
       toast({
         title: "Error",
-        description: "Failed to save birthday card",
+        description: "Failed to save farewell message",
         variant: "destructive",
       });
+    }
+  };
+
+  const handleUpdateCard = async (cardId: string, updatedContent: string) => {
+    try {
+      const { error } = await supabase
+        .from('birthday_cards')
+        .update({ content: updatedContent })
+        .eq('id', cardId);
+
+      if (error) {
+        console.error('Error updating card:', error);
+        toast({
+          title: "Error",
+          description: "Failed to update message",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Update the card in the local state
+      setCards(prevCards => 
+        prevCards.map(card => 
+          card.id === cardId ? { ...card, content: updatedContent } : card
+        )
+      );
+
+      toast({
+        title: "Updated! ✏️",
+        description: "Your message has been updated",
+      });
+    } catch (error) {
+      console.error('Error updating card:', error);
+    }
+  };
+
+  const handleDeleteCard = async (cardId: string) => {
+    try {
+      const { error } = await supabase
+        .from('birthday_cards')
+        .delete()
+        .eq('id', cardId);
+
+      if (error) {
+        console.error('Error deleting card:', error);
+        toast({
+          title: "Error",
+          description: "Failed to delete message",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Remove the card from local state
+      setCards(prevCards => prevCards.filter(card => card.id !== cardId));
+
+      toast({
+        title: "Deleted! 🗑️",
+        description: "Your message has been deleted",
+      });
+    } catch (error) {
+      console.error('Error deleting card:', error);
     }
   };
 
@@ -110,23 +192,24 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-100 via-purple-50 to-yellow-100">
+    <div className="min-h-screen bg-gradient-to-br from-orange-100 via-red-50 to-pink-100">
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-sm shadow-sm border-b border-purple-200">
+      <header className="bg-white/80 backdrop-blur-sm shadow-sm border-b border-orange-200">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
-            🎉 Birthday Cards App 🎂
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+            💝 Farewell Messages App 🌟
           </h1>
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2 text-gray-600">
               <User className="w-4 h-4" />
-              <span className="text-sm">{userEmail}</span>
+              <span className="text-sm">{userName}</span>
+              {userEmail && <span className="text-xs text-gray-500">({userEmail})</span>}
             </div>
             <Button 
               onClick={handleLogout}
               variant="outline"
               size="sm"
-              className="border-purple-300 text-purple-600 hover:bg-purple-50"
+              className="border-orange-300 text-orange-600 hover:bg-orange-50"
             >
               Logout
             </Button>
@@ -139,21 +222,33 @@ const Index = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Card Form - Takes 1 column */}
           <div className="lg:col-span-1">
-            <CardForm onSubmitCard={handleSubmitCard} userEmail={userEmail} />
+            <CardForm onSubmitCard={handleSubmitCard} userName={userName} userEmail={userEmail} />
           </div>
           
           {/* Card Display - Takes 2 columns */}
           <div className="lg:col-span-2">
             <div className="bg-white/70 backdrop-blur-sm rounded-xl p-6 shadow-lg">
+              {!userEmail && (
+                <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+                  <p className="text-sm text-amber-700">
+                    💡 <strong>Tip:</strong> To edit or delete your messages later, please log out and log back in with your email address.
+                  </p>
+                </div>
+              )}
               {loading ? (
                 <div className="text-center py-12">
-                  <div className="text-6xl mb-4">🎂</div>
+                  <div className="text-6xl mb-4">💝</div>
                   <h3 className="text-xl font-semibold text-gray-600">
-                    Loading birthday cards...
+                    Loading farewell messages...
                   </h3>
                 </div>
               ) : (
-                <CardDisplay cards={cards} />
+                <CardDisplay 
+                  cards={cards} 
+                  currentUserEmail={userEmail}
+                  onUpdateCard={handleUpdateCard}
+                  onDeleteCard={handleDeleteCard}
+                />
               )}
             </div>
           </div>
@@ -162,7 +257,7 @@ const Index = () => {
 
       {/* Footer */}
       <footer className="text-center py-6 text-gray-500 text-sm">
-        <p>Made with 💖 for celebrating special moments</p>
+        <p>Made with 💖 for celebrating meaningful goodbyes</p>
       </footer>
     </div>
   );

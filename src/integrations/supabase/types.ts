@@ -11,6 +11,7 @@ export type Database = {
     Tables: {
       birthday_cards: {
         Row: {
+          allows_editing: boolean
           content: string
           created_at: string
           email: string
@@ -19,6 +20,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          allows_editing?: boolean
           content: string
           created_at?: string
           email: string
@@ -27,6 +29,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          allows_editing?: boolean
           content?: string
           created_at?: string
           email?: string
