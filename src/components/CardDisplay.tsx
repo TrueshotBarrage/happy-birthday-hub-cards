@@ -1,3 +1,4 @@
+
 import React from "react";
 import FarewellCard from "./FarewellCard";
 
@@ -44,7 +45,8 @@ const CardDisplay = ({
       <h2 className="text-2xl font-bold text-center mb-8 text-gray-800">
         💝 Farewell Messages ({cards.length}) 🌟
       </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* Updated grid: 1 column on mobile, 2 columns on larger screens */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
         {cards.map((card, index) => (
           <FarewellCard
             key={card.id || index}

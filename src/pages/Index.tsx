@@ -4,7 +4,7 @@ import { useToast } from "@/components/ui/use-toast";
 import AuthForm from "@/components/AuthForm";
 import CardForm from "@/components/CardForm";
 import CardDisplay from "@/components/CardDisplay";
-import { User } from "lucide-react";
+import { User, LogIn } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 interface Card {
@@ -23,6 +23,7 @@ const Index = () => {
   const [userEmail, setUserEmail] = useState<string | undefined>();
   const [cards, setCards] = useState<Card[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showAuthForm, setShowAuthForm] = useState(false);
   const { toast } = useToast();
 
   // Fetch cards from Supabase
@@ -60,12 +61,18 @@ const Index = () => {
     setUserName(name);
     setUserEmail(email);
     setIsAuthenticated(true);
+    setShowAuthForm(false);
   };
 
   const handleLogout = () => {
     setIsAuthenticated(false);
     setUserName("");
     setUserEmail(undefined);
+    setShowAuthForm(false);
+  };
+
+  const handleShowAuth = () => {
+    setShowAuthForm(true);
   };
 
   const handleSubmitCard = async (newCard: Card) => {
@@ -177,7 +184,7 @@ const Index = () => {
     }
   };
 
-  if (!isAuthenticated) {
+  if (showAuthForm) {
     return <AuthForm onLogin={handleLogin} />;
   }
 
@@ -190,49 +197,102 @@ const Index = () => {
             💝 Farewell Messages App 🌟
           </h1>
           <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2 text-gray-600">
-              <User className="w-4 h-4" />
-              <span className="text-sm">{userName}</span>
-              {userEmail && (
-                <span className="text-xs text-gray-500">({userEmail})</span>
-              )}
-            </div>
-            <Button
-              onClick={handleLogout}
-              variant="outline"
-              size="sm"
-              className="border-orange-300 text-orange-600 hover:bg-orange-50"
-            >
-              Logout
-            </Button>
+            {isAuthenticated ? (
+              <>
+                <div className="flex items-center space-x-2 text-gray-600">
+                  <User className="w-4 h-4" />
+                  <span className="text-sm">{userName}</span>
+                  {userEmail && (
+                    <span className="text-xs text-gray-500">({userEmail})</span>
+                  )}
+                </div>
+                <Button
+                  onClick={handleLogout}
+                  variant="outline"
+                  size="sm"
+                  className="border-orange-300 text-orange-600 hover:bg-orange-50"
+                >
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <Button
+                onClick={handleShowAuth}
+                variant="outline"
+                size="sm"
+                className="border-orange-300 text-orange-600 hover:bg-orange-50"
+              >
+                <LogIn className="w-4 h-4 mr-2" />
+                Login to Post
+              </Button>
+            )}
           </div>
         </div>
       </header>
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Card Form - Takes 1 column */}
-          <div className="lg:col-span-1">
-            <CardForm
-              onSubmitCard={handleSubmitCard}
-              userName={userName}
-              userEmail={userEmail}
-            />
-          </div>
+        {isAuthenticated ? (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Card Form - Takes 1 column */}
+            <div className="lg:col-span-1">
+              <CardForm
+                onSubmitCard={handleSubmitCard}
+                userName={userName}
+                userEmail={userEmail}
+              />
+            </div>
 
-          {/* Card Display - Takes 2 columns */}
-          <div className="lg:col-span-2">
+            {/* Card Display - Takes 2 columns */}
+            <div className="lg:col-span-2">
+              <div className="bg-white/70 backdrop-blur-sm rounded-xl p-6 shadow-lg">
+                {!userEmail && (
+                  <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+                    <p className="text-sm text-amber-700">
+                      💡 <strong>Tip:</strong> To edit or delete your messages
+                      later, please log out and log back in with your email
+                      address.
+                    </p>
+                  </div>
+                )}
+                {loading ? (
+                  <div className="text-center py-12">
+                    <div className="text-6xl mb-4">💝</div>
+                    <h3 className="text-xl font-semibold text-gray-600">
+                      Loading farewell messages...
+                    </h3>
+                  </div>
+                ) : (
+                  <CardDisplay
+                    cards={cards}
+                    currentUserEmail={userEmail}
+                    onUpdateCard={handleUpdateCard}
+                    onDeleteCard={handleDeleteCard}
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+        ) : (
+          // Public view - only show messages
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-bold text-gray-800 mb-4">
+                View Farewell Messages for Josh Kim
+              </h2>
+              <p className="text-gray-600 mb-6">
+                Read the heartfelt messages from colleagues and friends. 
+                <Button
+                  onClick={handleShowAuth}
+                  variant="link"
+                  className="text-orange-600 hover:text-orange-700 p-0 ml-1"
+                >
+                  Login to add your own message!
+                </Button>
+              </p>
+            </div>
+            
             <div className="bg-white/70 backdrop-blur-sm rounded-xl p-6 shadow-lg">
-              {!userEmail && (
-                <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-lg">
-                  <p className="text-sm text-amber-700">
-                    💡 <strong>Tip:</strong> To edit or delete your messages
-                    later, please log out and log back in with your email
-                    address.
-                  </p>
-                </div>
-              )}
               {loading ? (
                 <div className="text-center py-12">
                   <div className="text-6xl mb-4">💝</div>
@@ -243,14 +303,14 @@ const Index = () => {
               ) : (
                 <CardDisplay
                   cards={cards}
-                  currentUserEmail={userEmail}
-                  onUpdateCard={handleUpdateCard}
-                  onDeleteCard={handleDeleteCard}
+                  currentUserEmail={undefined}
+                  onUpdateCard={() => {}}
+                  onDeleteCard={() => {}}
                 />
               )}
             </div>
           </div>
-        </div>
+        )}
       </main>
 
       {/* Footer */}
