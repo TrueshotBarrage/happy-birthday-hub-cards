@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -35,17 +34,6 @@ const FarewellCard = ({
   const [editedContent, setEditedContent] = useState(content);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
 
-  const cardColors = [
-    "from-orange-400 to-red-400",
-    "from-red-400 to-pink-400",
-    "from-pink-400 to-purple-400",
-    "from-purple-400 to-indigo-400",
-    "from-indigo-400 to-blue-400",
-    "from-blue-400 to-cyan-400",
-  ];
-
-  const cardColor = cardColors[index % cardColors.length];
-
   const handleSave = () => {
     if (editedContent.trim() && editedContent !== content) {
       onUpdate(id, editedContent.trim());
@@ -67,7 +55,7 @@ const FarewellCard = ({
   return (
     <>
       <Card
-        className={`shadow-lg border-0 bg-gradient-to-br ${cardColor} text-white transform transition-all duration-300 hover:scale-105 hover:shadow-xl relative`}
+        className="shadow-lg border border-slate-300 bg-white text-gray-800 transform transition-all duration-300 hover:scale-105 hover:shadow-xl relative"
       >
         {canEdit && (
           <div className="absolute top-2 right-2 flex space-x-1 z-10">
@@ -76,7 +64,7 @@ const FarewellCard = ({
                 <Button
                   size="sm"
                   variant="ghost"
-                  className="h-6 w-6 p-0 text-white hover:bg-white/20"
+                  className="h-6 w-6 p-0 text-gray-600 hover:bg-gray-100"
                   onClick={handleSave}
                 >
                   <Save className="h-3 w-3" />
@@ -84,7 +72,7 @@ const FarewellCard = ({
                 <Button
                   size="sm"
                   variant="ghost"
-                  className="h-6 w-6 p-0 text-white hover:bg-white/20"
+                  className="h-6 w-6 p-0 text-gray-600 hover:bg-gray-100"
                   onClick={handleCancel}
                 >
                   <X className="h-3 w-3" />
@@ -95,7 +83,7 @@ const FarewellCard = ({
                 <Button
                   size="sm"
                   variant="ghost"
-                  className="h-6 w-6 p-0 text-white hover:bg-white/20"
+                  className="h-6 w-6 p-0 text-gray-600 hover:bg-gray-100"
                   onClick={() => setIsEditing(true)}
                 >
                   <Edit className="h-3 w-3" />
@@ -103,7 +91,7 @@ const FarewellCard = ({
                 <Button
                   size="sm"
                   variant="ghost"
-                  className="h-6 w-6 p-0 text-white hover:bg-white/20"
+                  className="h-6 w-6 p-0 text-gray-600 hover:bg-gray-100"
                   onClick={handleDelete}
                 >
                   <Trash2 className="h-3 w-3" />
@@ -117,9 +105,9 @@ const FarewellCard = ({
           <div className="space-y-4">
             <div className="text-center">
               <h3 className="text-lg font-bold mb-1">
-                <p className="font-semibold text-white/90">💌 From: {name}</p>
+                <p className="font-semibold text-gray-700">💌 From: {name}</p>
               </h3>
-              <div className="w-12 h-0.5 bg-white/50 mx-auto"></div>
+              <div className="w-12 h-0.5 bg-gray-300 mx-auto"></div>
             </div>
 
             {image_url && (
@@ -144,16 +132,16 @@ const FarewellCard = ({
               </div>
             )}
 
-            <div className="bg-white/20 backdrop-blur-sm rounded-lg p-4">
+            <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
               {isEditing ? (
                 <Textarea
                   value={editedContent}
                   onChange={(e) => setEditedContent(e.target.value)}
-                  className="bg-white/90 text-gray-800 border-0 resize-none min-h-[100px]"
+                  className="bg-white text-gray-800 border-gray-300 resize-none min-h-[100px]"
                   autoFocus
                 />
               ) : (
-                <p className="text-white leading-relaxed text-center italic">
+                <p className="text-gray-700 leading-relaxed text-center italic">
                   "{content}"
                 </p>
               )}

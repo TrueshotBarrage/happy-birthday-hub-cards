@@ -99,32 +99,32 @@ const CardForm = ({ onSubmitCard, userName, userEmail }: CardFormProps) => {
   };
 
   return (
-    <Card className="shadow-lg border-0 bg-white/90 backdrop-blur-sm">
+    <Card className="shadow-lg border border-slate-600 bg-slate-800/80 backdrop-blur-sm">
       <CardHeader className="text-center">
-        <div className="mx-auto w-12 h-12 bg-gradient-to-r from-orange-400 to-red-500 rounded-full flex items-center justify-center mb-2">
+        <div className="mx-auto w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center mb-2">
           <Heart className="w-6 h-6 text-white" />
         </div>
-        <CardTitle className="text-xl font-bold text-gray-800">
+        <CardTitle className="text-xl font-bold text-slate-100">
           Write a Farewell Message 💌
         </CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-slate-300 mb-1">
               Your Message
             </label>
             <Textarea
               placeholder="Share your heartfelt farewell message, memories, or wishes..."
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              className="border-2 border-orange-200 focus:border-orange-400 rounded-lg min-h-[120px] resize-none"
+              className="border-2 border-slate-600 focus:border-blue-400 rounded-lg min-h-[120px] resize-none bg-slate-700 text-slate-100 placeholder:text-slate-400"
               required
             />
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-slate-300 mb-1">
               Add an Image (Optional)
             </label>
             {!imagePreview ? (
@@ -138,12 +138,12 @@ const CardForm = ({ onSubmitCard, userName, userEmail }: CardFormProps) => {
                 />
                 <label
                   htmlFor="image-upload"
-                  className="flex items-center justify-center w-full h-32 border-2 border-dashed border-orange-200 rounded-lg cursor-pointer hover:border-orange-400 transition-colors"
+                  className="flex items-center justify-center w-full h-32 border-2 border-dashed border-slate-600 rounded-lg cursor-pointer hover:border-blue-400 transition-colors bg-slate-700/50"
                 >
                   <div className="text-center">
-                    <Upload className="w-8 h-8 text-orange-400 mx-auto mb-2" />
-                    <p className="text-sm text-gray-600">Click to upload an image</p>
-                    <p className="text-xs text-gray-400">Max size: 5MB</p>
+                    <Upload className="w-8 h-8 text-blue-400 mx-auto mb-2" />
+                    <p className="text-sm text-slate-300">Click to upload an image</p>
+                    <p className="text-xs text-slate-400">Max size: 5MB</p>
                   </div>
                 </label>
               </div>
@@ -170,7 +170,7 @@ const CardForm = ({ onSubmitCard, userName, userEmail }: CardFormProps) => {
           <Button 
             type="submit" 
             disabled={uploading}
-            className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-semibold py-2 rounded-lg transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-semibold py-2 rounded-lg transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {uploading ? 'Uploading...' : 'Send Farewell Message 💝'}
           </Button>

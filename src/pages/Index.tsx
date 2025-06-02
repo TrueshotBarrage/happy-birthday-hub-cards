@@ -189,28 +189,28 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-100 via-red-50 to-pink-100">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900">
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-sm shadow-sm border-b border-orange-200">
+      <header className="bg-slate-800/80 backdrop-blur-sm shadow-sm border-b border-slate-700">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
             💝 Farewell Messages App 🌟
           </h1>
           <div className="flex items-center space-x-4">
             {isAuthenticated ? (
               <>
-                <div className="flex items-center space-x-2 text-gray-600">
+                <div className="flex items-center space-x-2 text-slate-300">
                   <User className="w-4 h-4" />
                   <span className="text-sm">{userName}</span>
                   {userEmail && (
-                    <span className="text-xs text-gray-500">({userEmail})</span>
+                    <span className="text-xs text-slate-400">({userEmail})</span>
                   )}
                 </div>
                 <Button
                   onClick={handleLogout}
                   variant="outline"
                   size="sm"
-                  className="border-orange-300 text-orange-600 hover:bg-orange-50"
+                  className="border-slate-600 text-slate-300 hover:bg-slate-700 bg-slate-800"
                 >
                   Logout
                 </Button>
@@ -220,7 +220,7 @@ const Index = () => {
                 onClick={handleShowAuth}
                 variant="outline"
                 size="sm"
-                className="border-orange-300 text-orange-600 hover:bg-orange-50"
+                className="border-slate-600 text-slate-300 hover:bg-slate-700 bg-slate-800"
               >
                 <LogIn className="w-4 h-4 mr-2" />
                 Login to Post
@@ -245,10 +245,10 @@ const Index = () => {
 
             {/* Card Display - Takes 2 columns */}
             <div className="lg:col-span-2">
-              <div className="bg-white/70 backdrop-blur-sm rounded-xl p-6 shadow-lg">
+              <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-slate-700">
                 {!userEmail && (
-                  <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-lg">
-                    <p className="text-sm text-amber-700">
+                  <div className="mb-6 p-4 bg-amber-900/30 border border-amber-700 rounded-lg">
+                    <p className="text-sm text-amber-300">
                       💡 <strong>Tip:</strong> To edit or delete your messages
                       later, please log out and log back in with your email
                       address.
@@ -258,7 +258,7 @@ const Index = () => {
                 {loading ? (
                   <div className="text-center py-12">
                     <div className="text-6xl mb-4">💝</div>
-                    <h3 className="text-xl font-semibold text-gray-600">
+                    <h3 className="text-xl font-semibold text-slate-300">
                       Loading farewell messages...
                     </h3>
                   </div>
@@ -277,26 +277,26 @@ const Index = () => {
           // Public view - only show messages
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-800 mb-4">
+              <h2 className="text-3xl font-bold text-slate-100 mb-4">
                 View Farewell Messages for Josh Kim
               </h2>
-              <p className="text-gray-600 mb-6">
+              <p className="text-slate-300 mb-6">
                 Read the heartfelt messages from colleagues and friends. 
                 <Button
                   onClick={handleShowAuth}
                   variant="link"
-                  className="text-orange-600 hover:text-orange-700 p-0 ml-1"
+                  className="text-blue-400 hover:text-blue-300 p-0 ml-1"
                 >
                   Login to add your own message!
                 </Button>
               </p>
             </div>
             
-            <div className="bg-white/70 backdrop-blur-sm rounded-xl p-6 shadow-lg">
+            <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-slate-700">
               {loading ? (
                 <div className="text-center py-12">
                   <div className="text-6xl mb-4">💝</div>
-                  <h3 className="text-xl font-semibold text-gray-600">
+                  <h3 className="text-xl font-semibold text-slate-300">
                     Loading farewell messages...
                   </h3>
                 </div>
@@ -314,7 +314,7 @@ const Index = () => {
       </main>
 
       {/* Footer */}
-      <footer className="text-center py-6 text-gray-500 text-sm">
+      <footer className="text-center py-6 text-slate-400 text-sm">
         <p>Made with 💖 by Dave Kim</p>
       </footer>
     </div>
