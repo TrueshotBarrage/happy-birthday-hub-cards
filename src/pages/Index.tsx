@@ -201,7 +201,7 @@ const Index = () => {
             onClick={() => window.location.reload()}
             className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent hover:opacity-80 transition-opacity cursor-pointer"
           >
-            💝 Farewell Messages App 🌟
+            Messages For Josh
           </button>
           <div className="flex items-center space-x-4">
             {isAuthenticated ? (
@@ -285,7 +285,7 @@ const Index = () => {
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-slate-100 mb-4">
-                View Farewell Messages for Josh Kim
+                In Case You Needed To Hear This:
               </h2>
               <p className="text-slate-300 mb-6">
                 Read the heartfelt messages from colleagues and friends. 

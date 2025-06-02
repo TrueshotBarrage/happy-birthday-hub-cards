@@ -36,7 +36,7 @@ const AuthForm = ({ onLogin, onBack }: AuthFormProps) => {
             onClick={onBack}
             className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent hover:opacity-80 transition-opacity cursor-pointer"
           >
-            💝 Farewell Messages App 🌟
+            Messages For Josh
           </button>
           <Button
             onClick={onBack}
@@ -58,11 +58,11 @@ const AuthForm = ({ onLogin, onBack }: AuthFormProps) => {
               <Heart className="w-8 h-8 text-white" />
             </div>
             <CardTitle className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
-              💝 Farewell Messages for Josh Kim 🌟
+              Make Josh Kim Smile!
             </CardTitle>
             <CardDescription className="text-slate-300">
-              Join us in sending heartfelt farewell messages for our favorite
-              resident doctor!
+              Join us in sending heartfelt encouragements to our favorite 
+              resident doctor, creating memories to cherish forever!
             </CardDescription>
           </CardHeader>
           <CardContent>

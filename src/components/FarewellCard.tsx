@@ -104,8 +104,8 @@ const FarewellCard = ({
         <CardContent className="p-6">
           <div className="space-y-4">
             <div className="text-center">
-              <h3 className="text-lg font-bold mb-1">
-                <p className="font-semibold text-gray-700">💌 From: {name}</p>
+              <h3 className="text-left text-lg font-bold mb-1">
+                <p className="font-semibold text-gray-700">💌 {name}:</p>
               </h3>
               <div className="w-12 h-0.5 bg-gray-300 mx-auto"></div>
             </div>

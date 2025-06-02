@@ -43,8 +43,11 @@ const CardDisplay = ({
   return (
     <div>
       <h2 className="text-2xl font-bold text-center mb-8 text-slate-100">
-        💝 Farewell Messages ({cards.length}) 🌟
+        Heartfelt Messages ({cards.length})
       </h2>
+      <p className="text-center text-slate-400 mb-6">
+        Sending You Strength and Kindness 💝
+      </p>
       {/* Updated grid: 1 column on mobile, 2 columns on larger screens */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
         {cards.map((card, index) => (
