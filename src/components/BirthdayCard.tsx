@@ -32,7 +32,7 @@ const FarewellCard = ({ name, content, email, index }: FarewellCardProps) => {
           
           <div className="bg-white/20 backdrop-blur-sm rounded-lg p-4">
             <p className="text-white leading-relaxed text-center italic">
-              "{content}"
+              {content}
             </p>
           </div>
           

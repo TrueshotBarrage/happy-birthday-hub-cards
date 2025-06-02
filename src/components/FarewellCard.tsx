@@ -105,10 +105,27 @@ const FarewellCard = ({
           <div className="space-y-4">
             <div className="text-center">
               <h3 className="text-left text-lg font-bold mb-1">
-                <p className="font-semibold text-gray-700">💌 {name}:</p>
+                <p className="font-semibold text-gray-700">💌 {name}</p>
               </h3>
-              <div className="w-12 h-0.5 bg-gray-300 mx-auto"></div>
+              <div className="h-0.5 bg-gray-300 mx-auto"></div>
             </div>
+
+            {content.trim() ? (
+              <div className="rounded-lg p-4">
+              {isEditing ? (
+                <Textarea
+                value={editedContent}
+                onChange={(e) => setEditedContent(e.target.value)}
+                className="bg-white text-gray-800 border-gray-300 resize-none min-h-[100px]"
+                autoFocus
+                />
+              ) : (
+                <p className="text-gray-700 leading-relaxed italic">
+                {content}
+                </p>
+              )}
+              </div>
+            ) : null}
 
             {image_url && (
               <div className="mb-4 relative group">
@@ -131,21 +148,7 @@ const FarewellCard = ({
                 </div>
               </div>
             )}
-
-            <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-              {isEditing ? (
-                <Textarea
-                  value={editedContent}
-                  onChange={(e) => setEditedContent(e.target.value)}
-                  className="bg-white text-gray-800 border-gray-300 resize-none min-h-[100px]"
-                  autoFocus
-                />
-              ) : (
-                <p className="text-gray-700 leading-relaxed text-center italic">
-                  "{content}"
-                </p>
-              )}
-            </div>
+            
           </div>
         </CardContent>
       </Card>

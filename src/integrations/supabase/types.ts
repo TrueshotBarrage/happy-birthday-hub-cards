@@ -9,7 +9,7 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      birthday_cards: {
+      farewell_cards: {
         Row: {
           allows_editing: boolean
           content: string
