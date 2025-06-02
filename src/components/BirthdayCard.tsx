@@ -2,14 +2,14 @@
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 
-interface BirthdayCardProps {
+interface FarewellCardProps {
   name: string;
   content: string;
   email: string;
   index: number;
 }
 
-const BirthdayCard = ({ name, content, email, index }: BirthdayCardProps) => {
+const FarewellCard = ({ name, content, email, index }: FarewellCardProps) => {
   const cardColors = [
     'from-pink-400 to-rose-400',
     'from-purple-400 to-indigo-400',
@@ -26,7 +26,7 @@ const BirthdayCard = ({ name, content, email, index }: BirthdayCardProps) => {
       <CardContent className="p-6">
         <div className="space-y-4">
           <div className="text-center">
-            <h3 className="text-lg font-bold mb-1">🎉 Happy Birthday! 🎂</h3>
+            <h3 className="text-lg font-bold mb-1">See you later, alligator!</h3>
             <div className="w-12 h-0.5 bg-white/50 mx-auto"></div>
           </div>
           
@@ -54,4 +54,4 @@ const BirthdayCard = ({ name, content, email, index }: BirthdayCardProps) => {
   );
 };
 
-export default BirthdayCard;
+export default FarewellCard;

@@ -30,7 +30,7 @@ const Index = () => {
   const fetchCards = async () => {
     try {
       const { data, error } = await supabase
-        .from("birthday_cards")
+        .from("farewell_cards")
         .select("*")
         .order("created_at", { ascending: false });
 
@@ -82,7 +82,7 @@ const Index = () => {
   const handleSubmitCard = async (newCard: Card) => {
     try {
       const { data, error } = await supabase
-        .from("birthday_cards")
+        .from("farewell_cards")
         .insert([
           {
             name: newCard.name,
@@ -127,7 +127,7 @@ const Index = () => {
   const handleUpdateCard = async (cardId: string, updatedContent: string) => {
     try {
       const { error } = await supabase
-        .from("birthday_cards")
+        .from("farewell_cards")
         .update({ content: updatedContent })
         .eq("id", cardId);
 
@@ -160,7 +160,7 @@ const Index = () => {
   const handleDeleteCard = async (cardId: string) => {
     try {
       const { status, error } = await supabase
-        .from("birthday_cards")
+        .from("farewell_cards")
         .delete()
         .eq("id", cardId);
 
