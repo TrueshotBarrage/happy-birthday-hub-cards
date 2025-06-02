@@ -75,6 +75,10 @@ const Index = () => {
     setShowAuthForm(true);
   };
 
+  const handleBackToHome = () => {
+    setShowAuthForm(false);
+  };
+
   const handleSubmitCard = async (newCard: Card) => {
     try {
       const { data, error } = await supabase
@@ -185,7 +189,7 @@ const Index = () => {
   };
 
   if (showAuthForm) {
-    return <AuthForm onLogin={handleLogin} />;
+    return <AuthForm onLogin={handleLogin} onBack={handleBackToHome} />;
   }
 
   return (
@@ -193,9 +197,12 @@ const Index = () => {
       {/* Header */}
       <header className="bg-slate-800/80 backdrop-blur-sm shadow-sm border-b border-slate-700">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+          <button
+            onClick={() => window.location.reload()}
+            className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent hover:opacity-80 transition-opacity cursor-pointer"
+          >
             💝 Farewell Messages App 🌟
-          </h1>
+          </button>
           <div className="flex items-center space-x-4">
             {isAuthenticated ? (
               <>
