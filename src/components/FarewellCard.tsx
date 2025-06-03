@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Edit, Trash2, Save, X, Expand } from "lucide-react";
+import { Edit, Trash2, Save, X } from "lucide-react";
 import ImageModal from "./ImageModal";
 
 interface FarewellCardProps {
@@ -128,24 +128,13 @@ const FarewellCard = ({
             ) : null}
 
             {image_url && (
-              <div className="mb-4 relative group">
+              <div className="mb-4">
                 <img
                   src={image_url}
                   alt="Farewell message"
                   className="w-full h-40 object-cover rounded-lg shadow-md cursor-pointer transition-transform hover:scale-105"
                   onClick={() => setIsImageModalOpen(true)}
                 />
-                <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    className="text-white hover:bg-white/20"
-                    onClick={() => setIsImageModalOpen(true)}
-                  >
-                    <Expand className="h-4 w-4 mr-1" />
-                    View Full Size
-                  </Button>
-                </div>
               </div>
             )}
             
