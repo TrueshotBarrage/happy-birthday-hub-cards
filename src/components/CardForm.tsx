@@ -75,28 +75,40 @@ const CardForm = ({ onSubmitCard, userName, userEmail }: CardFormProps) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (content.trim()) {
-      setUploading(true);
-      
-      let imageUrl: string | undefined;
-      
-      if (selectedImage) {
-        imageUrl = await uploadImage(selectedImage) || undefined;
-      }
-      
-      onSubmitCard({ 
-        name: userName, 
-        content, 
-        email: userEmail || '',
-        image_url: imageUrl
+    
+    // Validate that either content or image is provided
+    if (!content.trim() && !selectedImage) {
+      toast({
+        title: "Missing content",
+        description: "Please either write a message or attach an image",
+        variant: "destructive",
       });
-      
-      setContent('');
-      setSelectedImage(null);
-      setImagePreview(null);
-      setUploading(false);
+      return;
     }
+    
+    setUploading(true);
+    
+    let imageUrl: string | undefined;
+    
+    if (selectedImage) {
+      imageUrl = await uploadImage(selectedImage) || undefined;
+    }
+    
+    onSubmitCard({ 
+      name: userName, 
+      content, 
+      email: userEmail || '',
+      image_url: imageUrl
+    });
+    
+    setContent('');
+    setSelectedImage(null);
+    setImagePreview(null);
+    setUploading(false);
   };
+
+  // Check if form is valid for submission
+  const isFormValid = content.trim() || selectedImage;
 
   return (
     <Card className="shadow-lg border border-slate-600 bg-slate-800/80 backdrop-blur-sm">
@@ -119,7 +131,6 @@ const CardForm = ({ onSubmitCard, userName, userEmail }: CardFormProps) => {
               value={content}
               onChange={(e) => setContent(e.target.value)}
               className="border-2 border-slate-600 focus:border-blue-400 rounded-lg min-h-[120px] resize-none bg-slate-700 text-slate-100 placeholder:text-slate-400"
-              required
             />
           </div>
           
@@ -169,7 +180,7 @@ const CardForm = ({ onSubmitCard, userName, userEmail }: CardFormProps) => {
           
           <Button 
             type="submit" 
-            disabled={uploading}
+            disabled={uploading || !isFormValid}
             className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-semibold py-2 rounded-lg transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {uploading ? 'Uploading...' : 'Send Farewell Message 💝'}
