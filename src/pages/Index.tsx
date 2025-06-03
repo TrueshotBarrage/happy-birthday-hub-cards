@@ -285,7 +285,7 @@ const Index = () => {
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-slate-100 mb-4">
-                In Case You Needed To Hear This:
+                In Case You Needed To Hear This
               </h2>
               <p className="text-slate-300 mb-6">
                 Read the heartfelt messages from colleagues and friends. 
