@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -35,8 +36,8 @@ const FarewellCard = ({
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
 
   const handleSave = () => {
-    if (editedContent.trim() && editedContent !== content) {
-      onUpdate(id, editedContent.trim());
+    if (editedContent !== content) {
+      onUpdate(id, editedContent);
     }
     setIsEditing(false);
   };
@@ -111,16 +112,16 @@ const FarewellCard = ({
             </div>
 
             {content.trim() ? (
-              <div className="rounded-lg p-4">
+              <div className="rounded-lg p-4 flex-1">
               {isEditing ? (
                 <Textarea
                 value={editedContent}
                 onChange={(e) => setEditedContent(e.target.value)}
-                className="bg-white text-gray-800 border-gray-300 resize-none min-h-[100px]"
+                className="bg-white text-gray-800 border-gray-300 resize-none min-h-[200px] w-full"
                 autoFocus
                 />
               ) : (
-                <p className="text-gray-700 leading-relaxed italic">
+                <p className="text-gray-700 leading-relaxed italic whitespace-pre-wrap">
                 {content}
                 </p>
               )}
